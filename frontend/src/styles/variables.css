@@ -1,0 +1,198 @@
+/* 设计令牌 - 现代层次感配色方案 */
+
+:root {
+  /* ===== 背景色 - 精致的层次体系 ===== */
+  --color-bg-page: #F5F7FA;
+  --color-bg-elevated: #FFFFFF;
+  --color-bg-card: #FFFFFF;
+  --color-bg-card-hover: #F9FAFB;
+  --color-bg-subtle: #F0F2F5;
+  --color-bg-overlay: rgba(0, 0, 0, 0.45);
+
+  /* ===== 主色调 - 沉稳专业的蓝色 ===== */
+  --color-primary: #4F6EF7;
+  --color-primary-light: #7B93FA;
+  --color-primary-lighter: #E8EDFE;
+  --color-primary-dark: #3B55D9;
+  --color-primary-gradient: linear-gradient(135deg, #4F6EF7 0%, #7B93FA 100%);
+
+  /* ===== 辅助色 - 精致的点缀色 ===== */
+  --color-accent-amber: #F59E0B;
+  --color-accent-emerald: #10B981;
+  --color-accent-rose: #F43F5E;
+  --color-accent-violet: #8B5CF6;
+  --color-accent-cyan: #06B6D4;
+  /* 兼容旧名称 */
+  --color-accent-yellow: #F59E0B;
+  --color-accent-green: #10B981;
+  --color-accent-coral: #F43F5E;
+  --color-accent-purple: #8B5CF6;
+  --color-accent-blue: #06B6D4;
+
+  /* ===== 语义色 ===== */
+  --color-success: #10B981;
+  --color-success-light: #D1FAE5;
+  --color-warning: #F59E0B;
+  --color-warning-light: #FEF3C7;
+  --color-error: #EF4444;
+  --color-error-light: #FEE2E2;
+  --color-info: #4F6EF7;
+  --color-info-light: #E8EDFE;
+
+  /* ===== 文字色 - 四级层次 ===== */
+  --color-text-primary: #1A1D23;
+  --color-text-secondary: #5F6571;
+  --color-text-muted: #9CA3AF;
+  --color-text-disabled: #C9CDD4;
+  --color-text-accent: #4F6EF7;
+  --color-text-inverse: #FFFFFF;
+
+  /* ===== 边框色 ===== */
+  --color-border: #E5E7EB;
+  --color-border-light: #F0F1F3;
+  --color-border-focus: #4F6EF7;
+
+  /* ===== 间距系统（4px 基准） ===== */
+  --spacing-0: 0px;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+  --spacing-20: 80px;
+
+  /* ===== 字体系统 ===== */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-cn: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  --font-size-xs: 12px;
+  --font-size-sm: 13px;
+  --font-size-base: 14px;
+  --font-size-md: 15px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 22px;
+  --font-size-3xl: 28px;
+  --font-size-4xl: 36px;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+
+  /* ===== 圆角系统 ===== */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-full: 9999px;
+
+  /* ===== 阴影系统 - 精致的多层阴影 ===== */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+  --shadow-card-hover: 0 4px 8px rgba(0, 0, 0, 0.06), 0 12px 28px rgba(0, 0, 0, 0.05);
+  --shadow-button: 0 1px 3px rgba(79, 110, 247, 0.2);
+  --shadow-dropdown: 0 4px 6px rgba(0, 0, 0, 0.04), 0 12px 24px rgba(0, 0, 0, 0.08);
+  --shadow-modal: 0 8px 16px rgba(0, 0, 0, 0.08), 0 24px 48px rgba(0, 0, 0, 0.12);
+  --shadow-header: 0 1px 0 rgba(0, 0, 0, 0.05);
+  --shadow-inset: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+
+  /* ===== 过渡动画 ===== */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 300ms ease;
+  --transition-spring: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-smooth: 400ms cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* ===== 尺寸 ===== */
+  --header-height: 56px;
+  --content-max-width: 1080px;
+  --sidebar-width: 260px;
+
+  /* ===== Landing Page 设计令牌 ===== */
+  /* 颜色 */
+  --landing-bg: #f7fafc;
+  --landing-navy: #004370;
+  --landing-navy-light: #005a99;
+  --landing-cyan: #0099ff;
+  --landing-glass-bg: rgba(255, 255, 255, 0.7);
+  --landing-glass-border: rgba(255, 255, 255, 0.3);
+
+  /* 排版 */
+  --landing-font-hero: clamp(40px, 5vw, 56px);
+  --landing-font-section: clamp(28px, 3vw, 36px);
+
+  /* 效果 */
+  --landing-blur-glass: 6px;
+  --landing-radius-card: 20px;
+  --landing-shadow-card: 0 8px 32px rgba(0, 67, 112, 0.1);
+
+  /* 间距 */
+  --landing-content-max: 1440px;
+  --landing-section-padding: 80px;
+}
+
+/* ===== 深色模式 ===== */
+[data-theme="dark"] {
+  --color-bg-page: #0F1117;
+  --color-bg-elevated: #1A1D27;
+  --color-bg-card: #1A1D27;
+  --color-bg-card-hover: #22252F;
+  --color-bg-subtle: #151820;
+  --color-bg-overlay: rgba(0, 0, 0, 0.6);
+
+  --color-primary: #6B8AFF;
+  --color-primary-light: #8DA5FF;
+  --color-primary-lighter: rgba(107, 138, 255, 0.12);
+  --color-primary-dark: #4F6EF7;
+  --color-primary-gradient: linear-gradient(135deg, #6B8AFF 0%, #8DA5FF 100%);
+
+  --color-success-light: rgba(16, 185, 129, 0.12);
+  --color-warning-light: rgba(245, 158, 11, 0.12);
+  --color-error-light: rgba(239, 68, 68, 0.12);
+  --color-info-light: rgba(107, 138, 255, 0.12);
+
+  --color-text-primary: #E8EAED;
+  --color-text-secondary: #9AA0AB;
+  --color-text-muted: #6B7280;
+  --color-text-disabled: #4B5058;
+  --color-text-accent: #6B8AFF;
+
+  --color-border: #2A2D37;
+  --color-border-light: #1F222C;
+  --color-border-focus: #6B8AFF;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-card-hover: 0 4px 8px rgba(0, 0, 0, 0.25), 0 12px 28px rgba(0, 0, 0, 0.2);
+  --shadow-header: 0 1px 0 rgba(255, 255, 255, 0.04);
+  --shadow-dropdown: 0 4px 6px rgba(0, 0, 0, 0.2), 0 12px 24px rgba(0, 0, 0, 0.3);
+
+  /* Landing Page 深色模式 */
+  --landing-bg: #0F1117;
+  --landing-navy: #0a2540;
+  --landing-navy-light: #0d3a5c;
+  --landing-cyan: #38bdf8;
+  --landing-glass-bg: rgba(26, 29, 39, 0.7);
+  --landing-glass-border: rgba(255, 255, 255, 0.08);
+  --landing-shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
