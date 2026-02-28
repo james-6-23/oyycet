@@ -16,13 +16,6 @@ on:
       - 'backend/pom.xml'
       - 'Dockerfile'
       - 'docker-compose.yml'
-    paths-ignore:
-      - '**.md'
-      - '.vscode/**'
-      - '.idea/**'
-      - 'drawio/**'
-      - 'mermaid/**'
-      - 'plantuml/**'
   workflow_dispatch:
 
 env:
