@@ -4,7 +4,7 @@ import {
   NDataTable, NButton, NSpace, NInput, NSelect, NTag, NUpload, NCard,
   NPopconfirm, useMessage, type DataTableColumns, type UploadFileInfo,
 } from 'naive-ui'
-import type { Paper, PageResult } from '@/types/models'
+import type { Paper } from '@/types/models'
 import {
   getAdminPapers, importPaperJson, publishPaper, unpublishPaper, deletePaper,
 } from '@/services/admin'

@@ -2,9 +2,9 @@
 import { ref, h, onMounted, reactive } from 'vue'
 import {
   NDataTable, NButton, NSpace, NInput, NTag, NSwitch, NCard, NSelect,
-  NPopconfirm, useMessage, type DataTableColumns,
+  useMessage, type DataTableColumns,
 } from 'naive-ui'
-import type { AdminUser, PageResult } from '@/types/models'
+import type { AdminUser } from '@/types/models'
 import { getAdminUsers, updateUserRole, updateUserStatus } from '@/services/admin'
 import { useAuthStore } from '@/stores/auth'
 
