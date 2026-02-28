@@ -1,6 +1,10 @@
 package com.cet.practice.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cet.practice.common.BusinessException;
+import com.cet.practice.common.enums.PaperStatus;
+import com.cet.practice.converter.PaperConverter;
 import com.cet.practice.dto.*;
 import com.cet.practice.entity.CetPaper;
 import com.cet.practice.entity.CetPaperQuestion;
@@ -21,6 +25,36 @@ public class AdminPaperService {
     private final CetPaperQuestionService questionService;
     private final ObjectMapper objectMapper;
 
+    public Page<PaperDTO> pagePapers(int current, int size, String status, String title) {
+        LambdaQueryWrapper<CetPaper> wrapper = new LambdaQueryWrapper<CetPaper>()
+                .eq(CetPaper::getDeleted, 0);
+
+        if (status != null && !status.trim().isEmpty()) {
+            wrapper.eq(CetPaper::getStatus, status.trim());
+        }
+        if (title != null && !title.trim().isEmpty()) {
+            wrapper.like(CetPaper::getTitle, title.trim());
+        }
+
+        wrapper.orderByDesc(CetPaper::getCreateTime);
+
+        Page<CetPaper> page = paperService.page(new Page<>(current, size), wrapper);
+
+        Page<PaperDTO> result = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
+        result.setRecords(page.getRecords().stream().map(PaperConverter::toPaperDTO).toList());
+        return result;
+    }
+
+    public void deletePaper(Long paperId) {
+        CetPaper paper = paperService.getById(paperId);
+        if (paper == null || (paper.getDeleted() != null && paper.getDeleted() == 1)) {
+            throw new BusinessException(404, "试卷不存在");
+        }
+        paperService.removeById(paperId);
+        paperService.evictPaperListCache();
+        paperService.evictQuestionCache(paperId);
+    }
+
     @Transactional
     public PaperDTO importFromJsonPayload(AdminImportPayload payload) {
         PaperImportDTO p = payload.getPaper();
@@ -33,7 +67,7 @@ public class AdminPaperService {
         paper.setDifficulty(p.getDifficulty() == null ? "MEDIUM" : p.getDifficulty());
         paper.setType(p.getType() == null ? "FULL" : p.getType());
         paper.setDurationMin(p.getDurationMin() == null ? 130 : p.getDurationMin());
-        paper.setStatus("DRAFT");
+        paper.setStatus(PaperStatus.DRAFT.getValue());
         paper.setAttempts(0);
         paper.setListeningRefPaperNo(p.getListeningRefPaperNo());
         paperService.save(paper);
@@ -73,7 +107,7 @@ public class AdminPaperService {
             questionService.saveBatch(toSave);
         }
 
-        return toPaperDTO(paper);
+        return PaperConverter.toPaperDTO(paper);
     }
 
     public void publish(Long paperId) {
@@ -81,8 +115,10 @@ public class AdminPaperService {
         if (paper == null || (paper.getDeleted() != null && paper.getDeleted() == 1)) {
             throw new BusinessException(404, "试卷不存在");
         }
-        paper.setStatus("PUBLISHED");
+        paper.setStatus(PaperStatus.PUBLISHED.getValue());
         paperService.updateById(paper);
+        paperService.evictPaperListCache();
+        paperService.evictQuestionCache(paperId);
     }
 
     public void unpublish(Long paperId) {
@@ -90,25 +126,9 @@ public class AdminPaperService {
         if (paper == null || (paper.getDeleted() != null && paper.getDeleted() == 1)) {
             throw new BusinessException(404, "试卷不存在");
         }
-        paper.setStatus("DRAFT");
+        paper.setStatus(PaperStatus.DRAFT.getValue());
         paperService.updateById(paper);
-    }
-
-    private static PaperDTO toPaperDTO(CetPaper paper) {
-        PaperDTO dto = new PaperDTO();
-        dto.setId(paper.getId());
-        dto.setTitle(paper.getTitle());
-        dto.setYear(paper.getYear());
-        dto.setMonth(paper.getMonth());
-        dto.setPaperNo(paper.getPaperNo());
-        dto.setDifficulty(paper.getDifficulty());
-        dto.setType(paper.getType());
-        dto.setDurationMin(paper.getDurationMin());
-        dto.setStatus(paper.getStatus());
-        dto.setAttempts(paper.getAttempts());
-        dto.setListeningRefPaperId(paper.getListeningRefPaperId());
-        dto.setListeningRefPaperNo(paper.getListeningRefPaperNo());
-        return dto;
+        paperService.evictPaperListCache();
+        paperService.evictQuestionCache(paperId);
     }
 }
-

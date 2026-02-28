@@ -53,7 +53,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/papers/*/submit").authenticated()
                         // 管理员接口
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .anyRequest().permitAll());
+                        // 默认拒绝所有未匹配的请求
+                        .anyRequest().denyAll());
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

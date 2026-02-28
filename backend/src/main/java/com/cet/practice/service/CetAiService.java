@@ -1,6 +1,8 @@
 package com.cet.practice.service;
 
+import com.cet.practice.common.BusinessException;
 import com.cet.practice.dto.AiResponse;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -11,6 +13,7 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * CET AI 服务 - 使用 Spring AI 框架
@@ -22,6 +25,25 @@ public class CetAiService {
 
     private final ChatClient.Builder chatClientBuilder;
 
+    /** 复用 ChatClient 实例，避免每次请求都创建 */
+    private ChatClient chatClient;
+
+    /** 检测 prompt 注入的常见模式 */
+    private static final Pattern INJECTION_PATTERN = Pattern.compile(
+            "(?i)(ignore\\s+(previous|above|all)\\s+(instructions|prompts|rules))" +
+            "|(you\\s+are\\s+now\\s+)" +
+            "|(system\\s*:\\s*)" +
+            "|(\\bDAN\\b.*\\bmode\\b)" +
+            "|(jailbreak)",
+            Pattern.CASE_INSENSITIVE
+    );
+
+    @PostConstruct
+    public void init() {
+        this.chatClient = chatClientBuilder.build();
+        log.info("ChatClient 初始化完成");
+    }
+
     /**
      * 翻译文本
      */
@@ -30,7 +52,7 @@ public class CetAiService {
         String systemPrompt = String.format(
                 "你是一个专业的英语翻译助手。请将用户输入的内容翻译成%s。只返回翻译结果，不要添加任何解释。",
                 langName);
-        return chat(systemPrompt, content);
+        return doChat(systemPrompt, content);
     }
 
     /**
@@ -45,7 +67,7 @@ public class CetAiService {
                 4. 中文翻译
                 请用简洁清晰的方式解释，适合 CET-4 考生理解。
                 """;
-        return chat(systemPrompt, sentence);
+        return doChat(systemPrompt, sentence);
     }
 
     /**
@@ -61,7 +83,7 @@ public class CetAiService {
                 5. 提供一个改进后的范例段落
                 请用鼓励性的语气，帮助学生进步。
                 """;
-        return chat(systemPrompt, essay);
+        return doChat(systemPrompt, essay);
     }
 
     /**
@@ -75,17 +97,22 @@ public class CetAiService {
                 - 提供学习建议
                 - 进行英语对话练习
                 请用友好、专业的语气回答问题。
+                重要：你只回答与英语学习相关的问题，拒绝回答无关话题。
                 """;
-        return chat(systemPrompt, userMessage);
+        return doChat(systemPrompt, userMessage);
     }
 
     /**
-     * 核心对话方法
+     * 核心对话方法（含输入防护）
      */
-    private AiResponse chat(String systemPrompt, String userMessage) {
-        try {
-            ChatClient chatClient = chatClientBuilder.build();
+    private AiResponse doChat(String systemPrompt, String userMessage) {
+        // 输入防护：检测 prompt 注入
+        if (INJECTION_PATTERN.matcher(userMessage).find()) {
+            log.warn("检测到疑似 prompt 注入: {}", userMessage.substring(0, Math.min(100, userMessage.length())));
+            throw new BusinessException(400, "输入内容包含不允许的指令");
+        }
 
+        try {
             Prompt prompt = new Prompt(List.of(
                     new SystemMessage(systemPrompt),
                     new UserMessage(userMessage)));
@@ -104,10 +131,12 @@ public class CetAiService {
                     .tokenUsage(tokenUsage)
                     .build();
 
+        } catch (BusinessException e) {
+            throw e;
         } catch (Exception e) {
             log.error("AI 调用失败: {}", e.getMessage(), e);
             return AiResponse.builder()
-                    .content("抱歉，AI 服务暂时不可用，请稍后再试。错误信息: " + e.getMessage())
+                    .content("抱歉，AI 服务暂时不可用，请稍后再试。")
                     .build();
         }
     }

@@ -1,5 +1,6 @@
 package com.cet.practice.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cet.practice.common.BusinessException;
 import com.cet.practice.common.Result;
 import com.cet.practice.dto.AdminImportPayload;
@@ -19,6 +20,15 @@ public class AdminPaperController {
 
     private final AdminPaperService adminPaperService;
     private final ObjectMapper objectMapper;
+
+    @GetMapping
+    public Result<Page<PaperDTO>> list(
+            @RequestParam(defaultValue = "1") int current,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String title) {
+        return Result.success(adminPaperService.pagePapers(current, size, status, title));
+    }
 
     @PostMapping("/import-json")
     public Result<PaperDTO> importJson(@RequestParam("file") MultipartFile file) {
@@ -58,5 +68,10 @@ public class AdminPaperController {
         adminPaperService.unpublish(id);
         return Result.success(null);
     }
-}
 
+    @DeleteMapping("/{id}")
+    public Result<Void> delete(@PathVariable Long id) {
+        adminPaperService.deletePaper(id);
+        return Result.success(null);
+    }
+}

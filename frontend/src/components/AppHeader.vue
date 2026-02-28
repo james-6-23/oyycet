@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { NButton, NIcon, NDropdown, NAvatar } from 'naive-ui'
-import { SunnyOutline, MoonOutline, MenuOutline, PersonOutline, LogOutOutline } from '@vicons/ionicons5'
+import { SunnyOutline, MoonOutline, MenuOutline, PersonOutline, LogOutOutline, SettingsOutline } from '@vicons/ionicons5'
 import { useTheme } from '@/composables/useTheme'
 import { useAuthStore } from '@/stores/auth'
 import MobileNav from './MobileNav.vue'
@@ -13,6 +13,8 @@ const auth = useAuthStore()
 const { isDark, toggleTheme } = useTheme()
 
 const showMobileNav = ref(false)
+
+const isAdmin = computed(() => auth.user?.role === 'ADMIN')
 
 const navItems = [
   { path: '/papers', label: '试卷' },
@@ -74,6 +76,15 @@ import { h } from 'vue'
       </nav>
 
       <div class="header-actions">
+        <RouterLink v-if="isAdmin" to="/admin" class="admin-link">
+          <NButton size="small" quaternary>
+            <template #icon>
+              <NIcon :size="16" :component="SettingsOutline" />
+            </template>
+            管理后台
+          </NButton>
+        </RouterLink>
+
         <button class="theme-toggle" @click="toggleTheme" :title="isDark ? '切换到浅色模式' : '切换到深色模式'">
           <NIcon :size="18" :component="isDark ? SunnyOutline : MoonOutline" />
         </button>
@@ -230,6 +241,10 @@ import { h } from 'vue'
   color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
+}
+
+.admin-link {
+  text-decoration: none;
 }
 
 .mobile-menu-btn {

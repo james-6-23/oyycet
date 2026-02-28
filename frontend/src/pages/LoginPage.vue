@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
-import { NForm, NFormItem, NInput, NButton, useMessage } from 'naive-ui'
+import { NForm, NFormItem, NInput, NButton, NIcon, useMessage } from 'naive-ui'
 import type { FormInst, FormRules } from 'naive-ui'
+import { DocumentTextOutline, SparklesOutline, FlashOutline } from '@vicons/ionicons5'
 import { login } from '../services/auth'
 import { useAuthStore } from '../stores/auth'
 
@@ -73,21 +74,21 @@ async function onSubmit() {
         <!-- Stats cards -->
         <div class="stats-row">
           <div class="stat-card">
-            <span class="stat-icon">📝</span>
+            <span class="stat-icon"><n-icon :component="DocumentTextOutline" /></span>
             <div class="stat-info">
               <span class="stat-value">500+</span>
               <span class="stat-label">历年真题</span>
             </div>
           </div>
           <div class="stat-card">
-            <span class="stat-icon">🤖</span>
+            <span class="stat-icon"><n-icon :component="SparklesOutline" /></span>
             <div class="stat-info">
               <span class="stat-value">AI</span>
               <span class="stat-label">智能解析</span>
             </div>
           </div>
           <div class="stat-card">
-            <span class="stat-icon">⚡</span>
+            <span class="stat-icon"><n-icon :component="FlashOutline" /></span>
             <div class="stat-info">
               <span class="stat-value">实时</span>
               <span class="stat-label">评分系统</span>
@@ -232,6 +233,9 @@ async function onSubmit() {
 .auth-branding {
   flex: 1;
   max-width: 480px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 .brand-row {
@@ -242,31 +246,33 @@ async function onSubmit() {
 }
 
 .brand-logo {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
   background: var(--color-primary-gradient);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 800;
   letter-spacing: -0.5px;
+  box-shadow: 0 4px 12px rgba(79, 110, 247, 0.3);
 }
 
 .brand-text {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
+  font-size: 22px;
+  font-weight: 800;
   color: var(--color-text-primary);
   letter-spacing: var(--letter-spacing-tight);
 }
 
 .branding-title {
-  font-size: clamp(32px, 4vw, 44px);
-  font-weight: 800;
-  line-height: 1.2;
-  margin: 0 0 20px;
+  font-size: clamp(36px, 4vw, 48px);
+  font-weight: 900;
+  line-height: 1.25;
+  margin: 0 0 24px;
+  letter-spacing: -0.5px;
 }
 
 .title-line {
@@ -281,10 +287,11 @@ async function onSubmit() {
 }
 
 .branding-desc {
-  font-size: 16px;
+  font-size: 17px;
   color: var(--color-text-secondary);
-  line-height: 1.7;
-  margin: 0 0 36px;
+  line-height: 1.8;
+  margin: 0 0 40px;
+  font-weight: 500;
 }
 
 /* ===== Stats Row ===== */
@@ -296,22 +303,24 @@ async function onSubmit() {
 .stat-card {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  background: var(--landing-glass-bg);
-  backdrop-filter: blur(var(--landing-blur-glass));
-  border: 1px solid var(--landing-glass-border);
-  border-radius: var(--landing-radius-card, 16px);
-  box-shadow: var(--landing-shadow-card);
-  transition: transform 0.3s ease;
+  gap: 12px;
+  padding: 14px 20px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 67, 112, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .stat-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 67, 112, 0.12);
 }
 
 .stat-icon {
-  font-size: 22px;
+  font-size: 24px;
+  color: var(--color-primary);
   line-height: 1;
 }
 
@@ -321,15 +330,17 @@ async function onSubmit() {
 }
 
 .stat-value {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 800;
   color: var(--color-text-primary);
   line-height: 1.2;
 }
 
 .stat-label {
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 600;
   color: var(--color-text-secondary);
+  margin-top: 2px;
 }
 
 /* ===== Right Form Card ===== */

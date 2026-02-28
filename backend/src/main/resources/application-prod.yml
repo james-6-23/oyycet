@@ -1,0 +1,6 @@
+logging:
+  level:
+    com.cet.practice: WARN
+    org.springframework.web: WARN
+knife4j:
+  production: true

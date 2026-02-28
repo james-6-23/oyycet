@@ -3,7 +3,6 @@ import LandingHeader from '@/components/landing/LandingHeader.vue'
 import HeroSection from '@/components/landing/HeroSection.vue'
 import FeatureCards from '@/components/landing/FeatureCards.vue'
 import ProductShowcase from '@/components/landing/ProductShowcase.vue'
-import SocialProof from '@/components/landing/SocialProof.vue'
 import CTASection from '@/components/landing/CTASection.vue'
 import LandingFooter from '@/components/landing/LandingFooter.vue'
 </script>
@@ -15,7 +14,6 @@ import LandingFooter from '@/components/landing/LandingFooter.vue'
       <HeroSection />
       <FeatureCards />
       <ProductShowcase />
-      <SocialProof />
       <CTASection />
     </main>
     <LandingFooter />

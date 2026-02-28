@@ -6,9 +6,17 @@ spring:
     url: ${DB_URL:jdbc:mysql://localhost:3306/cet_practice?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true}
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:root}
-  flyway:
-    enabled: true
-    baseline-on-migrate: true
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 300000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:db/init.sql
 
   # Redis 缓存
   data:
@@ -53,7 +61,18 @@ knife4j:
   setting:
     language: zh_cn
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+
 app:
+  cors:
+    allowed-origins: ${APP_CORS_ORIGINS:http://localhost:5173,http://localhost:3000}
   jwt:
-    secret: ${APP_JWT_SECRET:change-me-please-change-me-please-change-me-please}
+    secret: ${APP_JWT_SECRET:}
     expires-seconds: ${APP_JWT_EXPIRES_SECONDS:604800}

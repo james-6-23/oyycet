@@ -13,7 +13,6 @@ const showMobileMenu = ref(false)
 const navLinks = [
   { label: '功能特性', href: '#features' },
   { label: '产品展示', href: '#product' },
-  { label: '学员评价', href: '#testimonials' },
 ]
 
 function handleScroll() {
@@ -117,6 +116,9 @@ onUnmounted(() => {
   -webkit-backdrop-filter: blur(var(--landing-blur-glass));
   background: transparent;
   transition: background 0.3s ease, box-shadow 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 .landing-header.scrolled {
@@ -146,22 +148,23 @@ onUnmounted(() => {
 }
 
 .brand-logo {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
   background: var(--color-primary-gradient);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 800;
   letter-spacing: -0.5px;
+  box-shadow: var(--shadow-sm);
 }
 
 .brand-text {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
+  font-size: 20px;
+  font-weight: 800;
   color: var(--color-text-primary);
   letter-spacing: var(--letter-spacing-tight);
 }
@@ -176,10 +179,10 @@ onUnmounted(() => {
 .nav-link {
   color: var(--color-text-secondary);
   text-decoration: none;
-  font-weight: var(--font-weight-medium);
-  font-size: var(--font-size-sm);
-  padding: 6px 14px;
-  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-semibold);
+  font-size: 15px;
+  padding: 8px 16px;
+  border-radius: var(--radius-lg);
   transition: color var(--transition-fast), background var(--transition-fast);
 }
 
@@ -200,11 +203,11 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   border: none;
   background: none;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   color: var(--color-text-secondary);
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -220,22 +223,22 @@ onUnmounted(() => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 34px;
-  padding: 0 18px;
+  height: 40px;
+  padding: 0 24px;
   background: var(--color-primary-gradient);
   color: #fff;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
+  font-size: 15px;
+  font-weight: var(--font-weight-bold);
   border-radius: var(--radius-full);
   text-decoration: none;
   transition: opacity var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
-  box-shadow: var(--shadow-button);
+  box-shadow: 0 4px 14px rgba(79, 110, 247, 0.35);
 }
 
 .cta-btn:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(79, 110, 247, 0.3);
+  opacity: 0.95;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(79, 110, 247, 0.45);
 }
 
 /* ===== Mobile Menu Button ===== */
@@ -243,11 +246,11 @@ onUnmounted(() => {
   display: none;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   border: none;
   background: none;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   color: var(--color-text-secondary);
   cursor: pointer;
   transition: all var(--transition-fast);

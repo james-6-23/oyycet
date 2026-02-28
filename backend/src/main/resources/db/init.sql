@@ -27,11 +27,10 @@ CREATE TABLE IF NOT EXISTS cet_paper (
   create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   deleted TINYINT NOT NULL DEFAULT 0,
+  INDEX idx_paper_status (status),
+  INDEX idx_paper_year_month_no (year, month, paper_no),
   CONSTRAINT fk_paper_listening_ref FOREIGN KEY (listening_ref_paper_id) REFERENCES cet_paper(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE INDEX idx_paper_status ON cet_paper(status);
-CREATE INDEX idx_paper_year_month_no ON cet_paper(year, month, paper_no);
 
 CREATE TABLE IF NOT EXISTS cet_paper_question (
   id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -54,11 +53,9 @@ CREATE TABLE IF NOT EXISTS cet_paper_question (
   sort_order INT NOT NULL DEFAULT 0,
   create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  deleted TINYINT NOT NULL DEFAULT 0,
+  INDEX idx_question_paper_sort (paper_id, sort_order),
   CONSTRAINT fk_question_paper FOREIGN KEY (paper_id) REFERENCES cet_paper(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE INDEX idx_question_paper_sort ON cet_paper_question(paper_id, sort_order);
 
 CREATE TABLE IF NOT EXISTS cet_practice_record (
   id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -73,10 +70,8 @@ CREATE TABLE IF NOT EXISTS cet_practice_record (
   create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   deleted TINYINT NOT NULL DEFAULT 0,
+  INDEX idx_record_user_time (user_id, finish_time),
+  INDEX idx_record_paper (paper_id),
   CONSTRAINT fk_record_user FOREIGN KEY (user_id) REFERENCES cet_user(id),
   CONSTRAINT fk_record_paper FOREIGN KEY (paper_id) REFERENCES cet_paper(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE INDEX idx_record_user_time ON cet_practice_record(user_id, finish_time);
-CREATE INDEX idx_record_paper ON cet_practice_record(paper_id);
-

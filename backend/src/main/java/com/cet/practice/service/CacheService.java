@@ -6,6 +6,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -68,6 +69,16 @@ public class CacheService {
     }
 
     /**
+     * 按前缀批量删除缓存
+     */
+    public void deleteByPrefix(String prefix) {
+        Set<String> keys = redisTemplate.keys(CACHE_PREFIX + prefix + "*");
+        if (keys != null && !keys.isEmpty()) {
+            redisTemplate.delete(keys);
+        }
+    }
+
+    /**
      * 判断 key 是否存在
      */
     public Boolean hasKey(String key) {
@@ -86,5 +97,17 @@ public class CacheService {
      */
     public Long getExpire(String key) {
         return redisTemplate.getExpire(CACHE_PREFIX + key);
+    }
+
+    /**
+     * 自增计数器，首次自增时设置过期时间
+     */
+    public Long increment(String key, Duration ttl) {
+        String fullKey = CACHE_PREFIX + key;
+        Long count = redisTemplate.opsForValue().increment(fullKey);
+        if (count != null && count == 1L) {
+            redisTemplate.expire(fullKey, ttl);
+        }
+        return count;
     }
 }

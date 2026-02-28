@@ -77,3 +77,29 @@ export interface PracticeStats {
   totalDuration: number
 }
 
+export interface AdminDashboardStats {
+  totalUsers: number
+  totalPapers: number
+  totalPublished: number
+  totalRecords: number
+  todayRecords: number
+}
+
+export interface AdminUser {
+  id: number
+  username: string
+  email?: string
+  nickname?: string
+  role: string
+  status: number
+  createTime: string
+}
+
+export interface PageResult<T> {
+  records: T[]
+  total: number
+  size: number
+  current: number
+  pages: number
+}
+

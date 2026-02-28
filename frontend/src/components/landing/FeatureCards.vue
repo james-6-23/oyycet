@@ -1,33 +1,40 @@
 <script setup lang="ts">
 import { useScrollReveal } from '@/composables/useScrollReveal'
+import { NIcon } from 'naive-ui'
+import {
+  DocumentTextOutline,
+  SparklesOutline,
+  FlashOutline,
+  BarChartOutline
+} from '@vicons/ionicons5'
 
 const { revealRef, isVisible } = useScrollReveal()
 defineExpose({ revealRef })
 
 interface FeatureCard {
-  icon: string
+  icon: any
   title: string
   desc: string
 }
 
 const features: FeatureCard[] = [
   {
-    icon: '📝',
+    icon: DocumentTextOutline,
     title: '历年真题',
     desc: '收录完整的 CET-4 历年真题，题型全面覆盖听力、阅读、翻译和写作。',
   },
   {
-    icon: '🤖',
+    icon: SparklesOutline,
     title: 'AI 智能解析',
     desc: '基于 AI 的智能解析系统，为每道题提供详细的解题思路和知识点讲解。',
   },
   {
-    icon: '⚡',
+    icon: FlashOutline,
     title: '实时评分',
     desc: '提交即出分，精准评估你的答题表现，快速了解薄弱环节。',
   },
   {
-    icon: '📊',
+    icon: BarChartOutline,
     title: '进度追踪',
     desc: '完整的练习记录和数据分析，可视化你的备考进度和成绩趋势。',
   },
@@ -52,7 +59,7 @@ const features: FeatureCard[] = [
           :style="{ transitionDelay: `${index * 100}ms` }"
         >
           <div class="icon-circle">
-            <span class="icon">{{ feature.icon }}</span>
+            <n-icon size="24" :component="feature.icon" />
           </div>
           <h3 class="card-title">{{ feature.title }}</h3>
           <p class="card-desc">{{ feature.desc }}</p>

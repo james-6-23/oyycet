@@ -3,6 +3,8 @@ package com.cet.practice.security;
 import com.cet.practice.entity.CetUser;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
+@Slf4j
 public class JwtTokenProvider {
 
     @Value("${app.jwt.secret}")
@@ -18,6 +21,19 @@ public class JwtTokenProvider {
 
     @Value("${app.jwt.expires-seconds}")
     private long expiresSeconds;
+
+    @PostConstruct
+    public void init() {
+        if (secret == null || secret.isBlank()) {
+            throw new IllegalStateException(
+                    "JWT secret 未配置！请设置环境变量 APP_JWT_SECRET（至少 32 字节）");
+        }
+        if (secret.getBytes(StandardCharsets.UTF_8).length < 32) {
+            throw new IllegalStateException(
+                    "JWT secret 太短（需要 >= 32 字节用于 HS256）");
+        }
+        log.info("JWT 密钥校验通过，Token 有效期: {} 秒", expiresSeconds);
+    }
 
     public String generateToken(CetUser user) {
         if (user == null || user.getId() == null) {
@@ -41,6 +57,12 @@ public class JwtTokenProvider {
         Claims claims = parseClaims(token);
         String sub = claims.getSubject();
         return sub == null ? null : Long.valueOf(sub);
+    }
+
+    public String getRole(String token) {
+        Claims claims = parseClaims(token);
+        String role = claims.get("role", String.class);
+        return role == null ? "STUDENT" : role;
     }
 
     public boolean validate(String token) {

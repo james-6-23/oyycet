@@ -1,7 +1,5 @@
 package com.cet.practice.security;
 
-import com.cet.practice.entity.CetUser;
-import com.cet.practice.service.CetUserService;
 import lombok.RequiredArgsConstructor;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,7 +19,6 @@ import java.util.Collections;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final CetUserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -31,10 +28,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = header.substring(7);
             if (jwtTokenProvider.validate(token)) {
                 Long userId = jwtTokenProvider.getUserId(token);
-                CetUser user = userId == null ? null : userService.getById(userId);
-                if (user != null && (user.getDeleted() == null || user.getDeleted() == 0)
-                        && user.getStatus() != null && user.getStatus() == 1) {
-                    String role = user.getRole() == null ? "STUDENT" : user.getRole();
+                if (userId != null) {
+                    String role = jwtTokenProvider.getRole(token);
                     UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                             userId,
                             null,

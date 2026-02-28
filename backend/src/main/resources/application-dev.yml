@@ -1,0 +1,4 @@
+logging:
+  level:
+    com.cet.practice: DEBUG
+    org.springframework.web: DEBUG
